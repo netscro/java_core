@@ -1,4 +1,4 @@
-package com.javacore.lesson2.models;
+package com.javacore.lesson2.models.humans;
 
 public abstract class Person {
 

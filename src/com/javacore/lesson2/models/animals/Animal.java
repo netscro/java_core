@@ -1,14 +1,12 @@
-package com.javacore.lesson2.models;
+package com.javacore.lesson2.models.animals;
 
 public class Animal {
 
-    String type;
     String name;
     String gender;
     int age;
 
-    public Animal(String type, String name, String gender, int age) {
-        this.type = type;
+    public Animal(String name, String gender, int age) {
         this.name = name;
         this.gender = gender;
         this.age = age;

@@ -1,8 +1,11 @@
-package com.javacore.lesson2.models;
+package com.javacore.lesson2.models.humans;
 
-public class Client extends Person {
+import com.javacore.lesson2.interfaces.Discount;
+import com.javacore.lesson2.models.animals.Animal;
 
-    Animal animal;
+public class Client extends Person implements Discount {
+
+    public Animal animal;
 
     private int visitCount;
     private boolean isFirstVisit = true;
@@ -24,5 +27,14 @@ public class Client extends Person {
 
     public boolean getIsFirstVisit() {
         return isFirstVisit;
+    }
+
+    @Override
+    public double applyDiscount(double visitPrice, double discount) {
+        if (isFirstVisit) {
+            System.out.printf("Discount for first visit is: %s $\n", discount);
+            return visitPrice - discount;
+        }
+        return visitPrice;
     }
 }
