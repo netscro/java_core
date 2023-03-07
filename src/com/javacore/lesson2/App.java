@@ -7,8 +7,8 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        VetClinic vetClinicController = new VetClinic();
-        vetClinicController.runApp();
+        VetClinic vetClinic = new VetClinic();
+        vetClinic.runApp();
     }
 
 }
