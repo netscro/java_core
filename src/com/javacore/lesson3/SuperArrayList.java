@@ -10,16 +10,19 @@ public class SuperArrayList<Type> implements BestList<Type> {
 
     @Override
     public Type get(int index) {
+        indexValidation(index);
         return (Type) array[index];
     }
 
     @Override
     public void set(int index, Type value) {
+        indexValidation(index);
         array[index] = value;
     }
 
     @Override
     public void remove(int index) {
+        indexValidation(index);
         if (isNotEmptyArray()) {
             temporaryArray = new Object[size() - 1];
             for (int i = 0, j = 0; i < size(); i++) {
@@ -34,7 +37,7 @@ public class SuperArrayList<Type> implements BestList<Type> {
 
     @Override
     public void add(int index, Type value) {
-
+        indexValidation(index);
         temporaryArray = new Object[size() + 1];
 
         if (index != 0) {
@@ -69,4 +72,12 @@ public class SuperArrayList<Type> implements BestList<Type> {
         }
         return true;
     }
+
+    private void indexValidation(int index){
+        if (index > size()){
+            System.out.println("The array is shorter than your index. Please choose the existing index.");
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
 }

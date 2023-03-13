@@ -5,7 +5,7 @@ public class HomeWork {
 
     public static void main(String[] args) {
 
-        SuperArrayList<String> superArrayList = new SuperArrayList<>();
+        BestList<String> superArrayList = new SuperArrayList<>();
 
         superArrayList.add(0, "text_1");
         superArrayList.add(1, "text_2");
