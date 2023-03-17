@@ -74,8 +74,8 @@ public class SuperArrayList<Type> implements BestList<Type> {
     }
 
     private void indexValidation(int index){
-        if (index > size() || size() < index){
-            System.out.println("The array is shorter than your index. Please choose the existing index.");
+        if (index > size() || index < 0){
+            System.out.println("Incorrect index. Please choose the existing index.");
             throw new IndexOutOfBoundsException();
         }
     }
