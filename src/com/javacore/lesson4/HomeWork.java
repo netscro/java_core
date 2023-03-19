@@ -4,6 +4,13 @@ import com.javacore.lesson4.interfaces.SuperList;
 import com.javacore.lesson4.interfaces.SuperQueue;
 import com.javacore.lesson4.interfaces.SuperStack;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+
 public class HomeWork {
 
     public static void main(String[] args) {
@@ -80,8 +87,24 @@ public class HomeWork {
 
         // Task 3
         // Map
+        Map<String, LocalDate> map = new HashMap<>();
+        map.put("Shevchenko", LocalDate.of(1814, 3, 9));
+        map.put("Skovoroda", LocalDate.of(1722, 12, 3));
+        map.put("Kotsiubinsky", LocalDate.of(1913, 9, 3));
+        map.put("Ukrainka", LocalDate.of(1871, 2, 25));
+        map.put("Nechuy-Levytsky", LocalDate.of(1838, 11, 25));
 
+        System.out.println(map);
 
+        Iterator<Map.Entry<String, LocalDate>> i = map.entrySet().iterator();
+        while (i.hasNext()) {
+            String month = i.next().getValue().format(DateTimeFormatter.ofPattern("MM"));
+            if (month.equals("12") || month.equals("01") || month.equals("02")) {
+                i.remove();
+            }
+        }
+
+        System.out.println(map);
     }
 
 }
