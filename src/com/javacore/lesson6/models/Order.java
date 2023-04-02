@@ -1,9 +1,10 @@
 package com.javacore.lesson6.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-public class Order {
+public class Order implements Serializable {
 
     private int orderNumber;
     private Enum<OrderStatus> orderStatusEnum;
