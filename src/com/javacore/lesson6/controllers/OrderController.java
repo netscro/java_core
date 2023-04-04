@@ -4,7 +4,8 @@ import com.javacore.lesson6.exceptions.InvalidStatusException;
 import com.javacore.lesson6.exceptions.OutOfRangeException;
 import com.javacore.lesson6.models.Order;
 import com.javacore.lesson6.models.OrderStatus;
-import com.javacore.lesson6.utils.FindIndex;
+import com.javacore.lesson6.models.OrdersFile;
+import com.javacore.lesson6.services.OrderStorageService;
 import com.javacore.lesson6.views.OrderView;
 
 import java.io.IOException;
@@ -13,17 +14,22 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 
-public class OrdersStorageController {
+public class OrderController {
 
     private OrderView view;
     private Map<Integer, Order> ordersStorage;
 
-    public OrdersStorageController(Map<Integer, Order> ordersStorage, OrderView view) {
+    public OrderController(Map<Integer, Order> ordersStorage, OrderView view) {
         this.ordersStorage = ordersStorage;
         this.view = view;
     }
 
     public void runApp() throws OutOfRangeException, IOException {
+
+        OrderStorageService orderStorageService = new OrderStorageService(OrdersFile.PATH.getText(), OrdersFile.NAME.getText());
+        ordersStorage = orderStorageService.readOrders(ordersStorage);
+
+        view.outputOrdersStorage(ordersStorage);
 
         do {
             view.inputNewOrder();
@@ -42,10 +48,14 @@ public class OrdersStorageController {
             } catch (InvalidStatusException e) {
                 System.out.println("ERROR: " + e.getMessage());
                 view.outputOrderInfo(ordersStorage, newOrderNumber);
-                view.inputIsContinueOperation();
             }
 
+            view.inputIsContinueOperation();
+
         } while (view.isContinue());
+
+        orderStorageService.saveOrders(ordersStorage);
+        view.outputOrdersStorageUpdateSuccessNotification();
 
     }
 
@@ -83,14 +93,11 @@ public class OrdersStorageController {
     }
 
     private void updateOrderStatus(int orderNumber, Enum<OrderStatus> newOrderStatus) throws InvalidStatusException {
-
-        OrderStatus[] orderStatusArray = OrderStatus.values();
         Enum<OrderStatus> currentOrderStatus = getExistOrderStatus(orderNumber);
-
         if (currentOrderStatus.equals(OrderStatus.FAILED)) {
             throw new InvalidStatusException("Forbidden to change " + OrderStatus.FAILED + " order status");
 
-        } else if (FindIndex.indexOf(orderStatusArray, newOrderStatus) > FindIndex.indexOf(orderStatusArray, currentOrderStatus)) {
+        } else if (newOrderStatus.ordinal() > currentOrderStatus.ordinal()) {
             ordersStorage.get(orderNumber).setOrderStatusEnum(newOrderStatus);
             ordersStorage.get(orderNumber).setUpdateTime(LocalDateTime.now());
 
