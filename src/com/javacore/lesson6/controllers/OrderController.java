@@ -5,6 +5,7 @@ import com.javacore.lesson6.exceptions.OutOfRangeException;
 import com.javacore.lesson6.models.Order;
 import com.javacore.lesson6.models.OrderStatus;
 import com.javacore.lesson6.models.OrdersFile;
+import com.javacore.lesson6.services.OrderStorageService;
 import com.javacore.lesson6.views.OrderView;
 
 import java.io.IOException;
@@ -25,8 +26,8 @@ public class OrderController {
 
     public void runApp() throws OutOfRangeException, IOException {
 
-        FileController fileController = new FileController(OrdersFile.PATH.getText(), OrdersFile.NAME.getText());
-        ordersStorage = fileController.fillEmptyOrdersStorageFile(ordersStorage);
+        OrderStorageService orderStorageService = new OrderStorageService(OrdersFile.PATH.getText(), OrdersFile.NAME.getText());
+        ordersStorage = orderStorageService.readOrders(ordersStorage);
 
         view.outputOrdersStorage(ordersStorage);
 
@@ -53,7 +54,7 @@ public class OrderController {
 
         } while (view.isContinue());
 
-        fileController.updateOrdersStorageFile(ordersStorage);
+        orderStorageService.saveOrders(ordersStorage);
         view.outputOrdersStorageUpdateSuccessNotification();
 
     }

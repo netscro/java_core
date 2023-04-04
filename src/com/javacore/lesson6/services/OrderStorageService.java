@@ -1,18 +1,18 @@
-package com.javacore.lesson6.controllers;
+package com.javacore.lesson6.services;
 
 import com.javacore.lesson6.models.Order;
 
 import java.io.*;
 import java.util.Map;
 
-public class FileController {
+public class OrderStorageService {
 
     private String filePath;
     private String fileName;
     private static String absoluteFilePath;
     private static File file;
 
-    public FileController(String filePath, String fileName) {
+    public OrderStorageService(String filePath, String fileName) {
         this.filePath = filePath;
         this.fileName = fileName;
         absoluteFilePath = filePath + File.separator + fileName;
@@ -25,7 +25,7 @@ public class FileController {
         }
     }
 
-    public Map<Integer, Order> fillEmptyOrdersStorageFile(Map<Integer, Order> orders) throws IOException {
+    public Map<Integer, Order> readOrders(Map<Integer, Order> orders) throws IOException {
         checkFile();
         try {
             if (orders.size() == 0 && file.length() > 0) {
@@ -38,7 +38,7 @@ public class FileController {
         return orders;
     }
 
-    public void updateOrdersStorageFile(Map<Integer, Order> orders) throws IOException {
+    public void saveOrders(Map<Integer, Order> orders) throws IOException {
         checkFile();
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             oos.writeObject(orders);
