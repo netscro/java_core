@@ -21,7 +21,7 @@ public class CounterThread implements Runnable {
         }
     }
 
-    public void startThreads(CounterThread counterThread,
+    public List<Thread> startThreads(CounterThread counterThread,
                              List<Thread> threads, boolean isAddThreadsToList) {
 
         for (int i = 0; i < numberOfThreads; i++) {
@@ -30,6 +30,7 @@ public class CounterThread implements Runnable {
                 threads.add(thread);
             thread.start();
         }
+        return threads;
 
     }
 
