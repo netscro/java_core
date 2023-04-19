@@ -1,49 +1,40 @@
 package com.javacore.lesson10;
 
-import java.util.List;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CounterThread implements Runnable {
+public class CounterThread implements Callable<AtomicInteger> {
 
     private AtomicInteger counter = new AtomicInteger();
     private int numberOfThreads;
     private int numberOfIncrementsInThread;
+    private int fixedThreadPool;
 
-    public CounterThread(int numberOfThreads, int numberOfIncrementsInThread) {
+
+    public CounterThread(int numberOfThreads, int numberOfIncrementsInThread, int fixedThreadPool) {
         this.numberOfThreads = numberOfThreads;
         this.numberOfIncrementsInThread = numberOfIncrementsInThread;
+        this.fixedThreadPool = fixedThreadPool;
     }
 
     @Override
-    public void run() {
+    public AtomicInteger call() {
         for (int i = 0; i < numberOfIncrementsInThread; i++) {
             counter.incrementAndGet();
         }
+        return counter;
     }
 
-    public List<Thread> startThreads(CounterThread counterThread,
-                             List<Thread> threads, boolean isAddThreadsToList) {
+    public void startExecutorService() throws ExecutionException, InterruptedException {
+
+        ExecutorService service = Executors.newFixedThreadPool(fixedThreadPool);
 
         for (int i = 0; i < numberOfThreads; i++) {
-            Thread thread = new Thread(counterThread);
-            if (isAddThreadsToList)
-                threads.add(thread);
-            thread.start();
-        }
-        return threads;
-
-    }
-
-    public void joinThreads(List<Thread> threads) throws InterruptedException {
-
-        if (threads.size() > 0)
-            for (Thread thread : threads) {
-                thread.join();
-            }
-        else {
-            System.out.println("The List of threads is empty --> thread.join() was not applied.");
+            Future<AtomicInteger> future = service.submit(this);
+            counter = future.get();
         }
 
+        service.shutdown();
     }
 
     public AtomicInteger getCounter() {

@@ -1,19 +1,16 @@
 package com.javacore.lesson10;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class HomeWork10 {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
 
-        List<Thread> threads = new ArrayList<>();
-        CounterThread counterThread = new CounterThread(10, 1000);
+        CounterThread counterThread = new CounterThread(1000, 5, 5);
 
         System.out.println("Counter before starting threads: " + counterThread.getCounter());
 
-        counterThread.startThreads(counterThread, threads, true);
-        counterThread.joinThreads(threads);
+        counterThread.startExecutorService();
 
         System.out.println("Counter result: " + counterThread.getCounter());
 
